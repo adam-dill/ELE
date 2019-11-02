@@ -1,10 +1,8 @@
 import { PlatformManager } from '../managers/platform-manager';
 import { AstroidManager } from '../managers/astroid-manager';
 import { Player } from '../objects/player';
-import { Cameras } from 'phaser';
 
 export class GameScene extends Phaser.Scene {
-  private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private _background:Phaser.GameObjects.TileSprite;
   private _platformManager:PlatformManager;
   private _astroidManager:AstroidManager;
@@ -32,8 +30,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.cursors = this.input.keyboard.createCursorKeys();
-
+    
     // create background
     let shakeOffset = 50;
     this._background = this.add.tileSprite(-shakeOffset, -shakeOffset, this.sys.canvas.width + (shakeOffset*2), this.sys.canvas.height + (shakeOffset*2), 'background');

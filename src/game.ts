@@ -4,8 +4,12 @@ import { UIScene } from "./scenes/ui-scene";
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Infinite Runner",
-  width: 1000,
-  height: 576,
+  scale: {
+    width: 1000,
+    height: 576,
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   type: Phaser.AUTO,
   parent: "game",
   scene: [GameScene, UIScene],

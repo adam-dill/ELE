@@ -1,8 +1,8 @@
 const DAMAGE_AMOUNT:number = 10;
 const HURT_DURATION:number = 400;
 const RECOVERY_DURATION:number = 1000;
-const FUEL_USAGE:number = 0.2;
-const FUEL_REGENERATION:number = .007;
+const FUEL_USAGE:number = 0.5;
+const FUEL_REGENERATION:number = .1;
 
 export class Player extends Phaser.GameObjects.Sprite {
   body!: Phaser.Physics.Arcade.Body
@@ -42,11 +42,6 @@ export class Player extends Phaser.GameObjects.Sprite {
     this._jet.setPosition(this.x, this.y + 70);
     this.handleInput();
     this.handleAnimation();
-
-    if (this._fuel < 100) {
-      this._fuel += FUEL_REGENERATION;
-    }
-    this.scene.events.emit('setFuel', this._fuel); 
   }
 
   public hurt() {
@@ -88,9 +83,14 @@ export class Player extends Phaser.GameObjects.Sprite {
     if (this._cursors.up.isDown && this._fuel > 0) {
       this._jet.start();
       this.body.setVelocityY(-400);
-      this._fuel -= FUEL_USAGE; 
+      this._fuel -= FUEL_USAGE;
+      this.scene.events.emit('setFuel', this._fuel); 
     } else {
       this._jet.stop();
+      if (this._fuel < 100 && this.body.onFloor()) {
+        this._fuel += FUEL_REGENERATION;
+        this.scene.events.emit('setFuel', this._fuel); 
+      }
     }
   }
 
