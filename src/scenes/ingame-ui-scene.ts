@@ -1,15 +1,14 @@
 import { Scene } from "phaser"
 import { UIBar } from "../objects/ui-bar";
 
-export class UIScene extends Phaser.Scene {
+export class InGameUIScene extends Phaser.Scene {
 
     private _game:Scene;
 
 
     constructor() {
         super({
-            key: 'UIScene',
-            active: true
+            key: 'InGameUIScene'
         });
     }
 
@@ -20,7 +19,7 @@ export class UIScene extends Phaser.Scene {
             height: 10,
             x: 70,
             y: 14,
-            value: 50, 
+            value: 100, 
             maxValue: 100, 
             color:0xff0f0f,
             baseColor:0xcccccc,
@@ -32,15 +31,15 @@ export class UIScene extends Phaser.Scene {
             height: 10,
             x: 70,
             y: 33,
-            value: 99, 
+            value: 100, 
             maxValue: 100, 
             color:0x0000ff,
             baseColor:0xcccccc,
         });
 
         this._game = this.scene.get('GameScene');
-        var health = this.add.text(10, 10, 'Health', { font: '18px Arial', fill: '#000000' });
-        var fuel = this.add.text(25, 30,   'Fuel', { font: '18px Arial', fill: '#000000' });
+        this.add.text(10, 10, 'Health', { font: '18px Arial', fill: '#000000' });
+        this.add.text(25, 30,   'Fuel', { font: '18px Arial', fill: '#000000' });
         var distance = this.add.text(this.cameras.main.width/2, 10, '', { font: '18px Arial', fill: '#000000' })
 
         this._game.events.on('setHealth', function(value) {
@@ -56,8 +55,11 @@ export class UIScene extends Phaser.Scene {
             distance.setText((value / 1000) + '');
         }, this);
 
+        this.events.on('shutdown', function() {
+            this._game.events.off('setHealth');
+            this._game.events.off('setFuel');
+            this._game.events.off('setDistance');
+        }, this);
 
-
-        
     }
 }

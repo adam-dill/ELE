@@ -1,6 +1,15 @@
 import "phaser";
+import { MenuScene } from "./scenes/menu-scene";
 import { GameScene } from "./scenes/game-scene";
-import { UIScene } from "./scenes/ui-scene";
+import { LeaderBoardScene } from './scenes/leader-board-scene';
+import { InGameUIScene } from "./scenes/ingame-ui-scene";
+
+export enum SceneNames {
+  MENU='MenuScene',
+  GAME='GameScene',
+  GAME_UI='InGameUIScene',
+  LEADER='LeaderBoardScene',
+}
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Infinite Runner",
@@ -12,7 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   type: Phaser.AUTO,
   parent: "game",
-  scene: [GameScene, UIScene],
+  scene: [MenuScene, GameScene, InGameUIScene, LeaderBoardScene],
   physics: {
     default: "arcade",
     arcade: {

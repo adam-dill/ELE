@@ -1,6 +1,7 @@
 import { PlatformManager } from '../managers/platform-manager';
 import { AstroidManager } from '../managers/astroid-manager';
 import { Player } from '../objects/player';
+import { SceneNames } from '../game';
 
 export class GameScene extends Phaser.Scene {
   private _background:Phaser.GameObjects.TileSprite;
@@ -14,7 +15,7 @@ export class GameScene extends Phaser.Scene {
 
   constructor() {
     super({
-      key: "GameScene"
+      key: SceneNames.GAME
     });
   }
 
@@ -30,6 +31,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   create(): void {
+    let ui = this.scene.get(SceneNames.GAME_UI).scene.start();
     
     // create background
     let shakeOffset = 50;
@@ -47,10 +49,20 @@ export class GameScene extends Phaser.Scene {
     this._platformManager = new PlatformManager(this);
     this._platformManager.speed = this._speed;
     this._astroidManager = new AstroidManager(this, this._platformManager);
-    this._astroidManager.frequence = 2;
+    this._astroidManager.frequence = 1;
 
     this._platformManager.addCollider(this._player);
     this._astroidManager.addCollider(this._player);
+
+    this.events.on('playerDie', function() {
+      this.scene.start('LeaderBoardScene');
+    }, this);
+
+    this.events.on('shutdown', function() {
+      this.events.off('playerDie');
+      this.events.off('shutdown');
+      this.scene.get(SceneNames.GAME_UI).scene.stop();
+    }, this);
   }
 
   update(time:number, delta:number): void {

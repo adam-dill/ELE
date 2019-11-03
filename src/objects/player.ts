@@ -53,6 +53,10 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.anims.play('hurt');
     this.body.setVelocityX(-100);
     this.body.setVelocityY(-100);
+
+    if (this._health <= 0) {
+      this.scene.events.emit('playerDie');
+    }
   }
 
   private handleHurt(delta:number) {
