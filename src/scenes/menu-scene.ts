@@ -8,6 +8,9 @@ export class MenuScene extends Phaser.Scene {
     }
 
     create() {
+        let title = this.add.text(0, this.cameras.main.height/2, "Menu Screen", { font: '24px Arial', fill: '#ffffff' });
+        title.x = this.cameras.main.width / 2 - title.width / 2;
+        
         let start = this.add.text(10, 10, 'Start', { font: '18px Arial', fill: '#ffffff' });
         let leaderboard = this.add.text(10, 30, 'Leader Board', { font: '18px Arial', fill: '#ffffff' });
 

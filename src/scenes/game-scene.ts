@@ -55,7 +55,7 @@ export class GameScene extends Phaser.Scene {
     this._astroidManager.addCollider(this._player);
 
     this.events.on('playerDie', function() {
-      this.scene.start('LeaderBoardScene');
+      this.scene.start(SceneNames.LEADER_ENTRY);
     }, this);
 
     this.events.on('shutdown', function() {
