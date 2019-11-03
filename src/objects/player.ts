@@ -77,14 +77,27 @@ export class Player extends Phaser.GameObjects.Sprite {
   }
 
   private handleInput(): void {
-    if (this._cursors.right.isDown) {
+    let right:Boolean = false;
+    let left:Boolean = false;
+    let up:Boolean = false;
+    
+    var pointer = this.scene.input.activePointer;
+    if (pointer.isDown) {
+      var touchX = pointer.x;
+      var touchY = pointer.y;
+      if (touchX > this.x) { right = true; }
+      if (touchX < this.x) { left = true; }
+      if (touchY < this.y) { up = true; }
+    }
+
+    if (this._cursors.right.isDown || right) {
       this.body.setVelocityX(300);
-    } else if (this._cursors.left.isDown) {
+    } else if (this._cursors.left.isDown || left) {
       this.body.setVelocityX(-400);    
     } else {
       this.body.setVelocityX(-50);
     }
-    if (this._cursors.up.isDown && this._fuel > 0) {
+    if ((this._cursors.up.isDown || up) && this._fuel > 0) {
       this._jet.start();
       this.body.setVelocityY(-400);
       this._fuel -= FUEL_USAGE;
