@@ -7,6 +7,10 @@ export class LeaderBoardEntryScene extends Phaser.Scene {
         });
     }
 
+    init(data:any) {
+        // data.distance should be the score
+    }
+
     create() {
         let title = this.add.text(0, this.cameras.main.height/2, "Enter Info to Leader Board Screen", { font: '24px Arial', fill: '#ffffff' });
         title.x = this.cameras.main.width / 2 - title.width / 2;
