@@ -45,7 +45,7 @@ export class AstroidManager {
         let frame = 'astroid_' + Phaser.Math.Between(1, 4) + '.png';
         let astroid = this._scene.physics.add.image(x, -50, 'astroids', frame);
         astroid.name = 'astroid';
-        astroid.setScale(0.4);
+        astroid.setScale(0.5);
 
         this._platformManager.addCollider(astroid);
         this._scene.physics.add.overlap(astroid, this._colliders, function(astroid, object) {

@@ -24,8 +24,6 @@ export class GameScene extends Phaser.Scene {
     this.load.atlas('player', './assets/alien.png', './assets/alien.json');
     this.load.atlas('ground', './assets/platforms.png', './assets/platforms.json');
     this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
-    this.load.atlas('particles', './assets/shapes.png', './assets/shapes.json');
-    this.load.json('jetEmitter', './assets/jet.json');
   }
 
   create(): void {
@@ -47,7 +45,7 @@ export class GameScene extends Phaser.Scene {
     this._platformManager = new PlatformManager(this);
     this._platformManager.speed = this._speed;
     this._astroidManager = new AstroidManager(this, this._platformManager);
-    //this._astroidManager.frequence = 2;
+    this._astroidManager.frequence = 2;
 
     this._platformManager.addCollider(this._player);
     this._astroidManager.addCollider(this._player);

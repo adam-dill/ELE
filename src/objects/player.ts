@@ -1,3 +1,5 @@
+import { Game } from "phaser";
+
 const DAMAGE_AMOUNT:number = 10;
 const HURT_DURATION:number = 400;
 const RECOVERY_DURATION:number = 1000;
@@ -8,11 +10,11 @@ export class Player extends Phaser.GameObjects.Sprite {
   body!: Phaser.Physics.Arcade.Body
 
   private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-  private _hurtTime = 0;
-  private _jet:any;
+  
 
   private _health:number = 100;
-  private _fuel:number = 100;
+  private _jumpTime:number = 0;
+  private _hurtTime = 0;
 
   constructor(params) {
     super(params.scene, params.x, params.y, params.texture);
@@ -25,12 +27,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.body.setSize(105, 154);
     this.body.setOffset(12, 102);
     this.scene.add.existing(this);
-    this.setScale(0.7, 0.7);
     this.body.collideWorldBounds = true;
-
-    let particles = this.scene.add.particles('particles');
-    this._jet = particles.createEmitter(this.scene.cache.json.get('jetEmitter'));
-    this._jet.stop();
     
     this.depth = 10;
     this.anims.play('jump');
@@ -39,7 +36,6 @@ export class Player extends Phaser.GameObjects.Sprite {
 
   public update(time:number, delta:number): void {
     if (this.handleHurt(delta) === false) { return; }
-    this._jet.setPosition(this.x, this.y + 70);
     this.handleInput();
     this.handleAnimation();
   }
@@ -51,8 +47,6 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.scene.events.emit('setHealth', this._health);
     this._hurtTime = HURT_DURATION + RECOVERY_DURATION;
     this.anims.play('hurt');
-    this.body.setVelocityX(-100);
-    this.body.setVelocityY(-100);
 
     if (this._health <= 0) {
       this.scene.events.emit('playerDie');
@@ -77,37 +71,37 @@ export class Player extends Phaser.GameObjects.Sprite {
   }
 
   private handleInput(): void {
-    let right:Boolean = false;
-    let left:Boolean = false;
-    let up:Boolean = false;
+    let right:Boolean = this._cursors.right.isDown;
+    let left:Boolean = this._cursors.left.isDown;
+    let up:Boolean = this._cursors.up.isDown;
     
     var pointer = this.scene.input.activePointer;
     if (pointer.isDown) {
       var touchX = pointer.x;
       var touchY = pointer.y;
-      if (touchX > this.x) { right = true; }
-      if (touchX < this.x) { left = true; }
+      if (touchX > this.x + 75) { right = true; }
+      if (touchX < this.x - 75) { left = true; }
       if (touchY < this.y) { up = true; }
     }
 
-    if (this._cursors.right.isDown || right) {
-      this.body.setVelocityX(300);
-    } else if (this._cursors.left.isDown || left) {
+    if (right) {
+      this.body.setVelocityX(400);
+    } else if (left) {
       this.body.setVelocityX(-400);    
     } else {
       this.body.setVelocityX(-50);
     }
-    if ((this._cursors.up.isDown || up) && this._fuel > 0) {
-      this._jet.start();
-      this.body.setVelocityY(-400);
-      this._fuel -= FUEL_USAGE;
-      this.scene.events.emit('setFuel', this._fuel); 
-    } else {
-      this._jet.stop();
-      if (this._fuel < 100 && this.body.onFloor()) {
-        this._fuel += FUEL_REGENERATION;
-        this.scene.events.emit('setFuel', this._fuel); 
+    if (this.body.onFloor()) {
+      this._jumpTime = 0;
+    }
+    if (up) {
+      if (this.body.onFloor()) {
+        this._jumpTime = this.scene.game.getTime() + 350;
       }
+    }
+    if (this._jumpTime > this.scene.game.getTime()) {
+      let diff = this._jumpTime - this.scene.game.getTime();
+      this.body.setVelocityY(-100-diff);
     }
   }
 
