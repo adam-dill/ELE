@@ -12,6 +12,9 @@ export class GameScene extends Phaser.Scene {
 
   private _speed:number = 10;
   private _distance:number = 0;
+  private _maxFrequency:number = 4;
+  private _minFrequency:number = 1;
+  private _frequencyInterval:number = 0.001;
 
   constructor() {
     super({
@@ -45,7 +48,7 @@ export class GameScene extends Phaser.Scene {
     this._platformManager = new PlatformManager(this);
     this._platformManager.speed = this._speed;
     this._astroidManager = new AstroidManager(this, this._platformManager);
-    this._astroidManager.frequence = 2;
+    this._astroidManager.frequency = this._maxFrequency;
 
     this._platformManager.addCollider(this._player);
     this._astroidManager.addCollider(this._player);
@@ -71,6 +74,12 @@ export class GameScene extends Phaser.Scene {
 
     this._distance += this._speed;
     this.events.emit('setDistance', this._distance);
+
+    console.log(this._astroidManager.frequency, this._maxFrequency);
+    if (this._astroidManager.frequency > this._minFrequency) {
+      this._astroidManager.frequency -= this._frequencyInterval;
+      console.log(this._astroidManager.frequency);
+    }
   }
   
 }

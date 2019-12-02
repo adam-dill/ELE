@@ -7,8 +7,8 @@ export class AstroidManager {
     private _platformManager:PlatformManager;
     private _colliders:Array<GameObjects.GameObject> = new Array<GameObjects.GameObject>();
 
-
-    public set frequence(value:number) {
+    public get frequency():number { return this._frequency; }
+    public set frequency(value:number) {
         this._frequency = value;
     }
     private _frequency:number = 0;
@@ -40,7 +40,7 @@ export class AstroidManager {
     }
 
     private createAstroid() {
-        let x = Phaser.Math.Between(0, this._scene.cameras.main.width);
+        let x = Phaser.Math.Between(0, this._scene.cameras.main.width + 50);
 
         let frame = 'astroid_' + Phaser.Math.Between(1, 4) + '.png';
         let astroid = this._scene.physics.add.image(x, -50, 'astroids', frame);
