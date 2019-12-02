@@ -1,10 +1,8 @@
 import { Game } from "phaser";
 
-const DAMAGE_AMOUNT:number = 10;
+const DAMAGE_AMOUNT:number = 1;
 const HURT_DURATION:number = 400;
 const RECOVERY_DURATION:number = 1000;
-const FUEL_USAGE:number = 0.5;
-const FUEL_REGENERATION:number = .1;
 
 export class Player extends Phaser.GameObjects.Sprite {
   body!: Phaser.Physics.Arcade.Body
@@ -12,7 +10,7 @@ export class Player extends Phaser.GameObjects.Sprite {
   private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   
 
-  private _health:number = 100;
+  private _health:number = 3;
   private _jumpTime:number = 0;
   private _hurtTime = 0;
 

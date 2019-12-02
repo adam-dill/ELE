@@ -19,8 +19,8 @@ export class InGameUIScene extends Phaser.Scene {
             height: 10,
             x: 70,
             y: 14,
-            value: 100, 
-            maxValue: 100, 
+            value: 3, 
+            maxValue: 3, 
             color:0xff0f0f,
             baseColor:0xcccccc,
         });
