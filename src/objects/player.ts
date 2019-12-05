@@ -31,7 +31,6 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.anims.play('jump');
   }
 
-
   public update(time:number, delta:number): void {
     if (this.handleHurt(delta) === false) { return; }
     this.handleInput();
@@ -83,9 +82,9 @@ export class Player extends Phaser.GameObjects.Sprite {
     }
 
     if (right) {
-      this.body.setVelocityX(400);
+      this.body.setVelocityX(500);
     } else if (left) {
-      this.body.setVelocityX(-400);    
+      this.body.setVelocityX(-500);    
     } else {
       this.body.setVelocityX(-50);
     }

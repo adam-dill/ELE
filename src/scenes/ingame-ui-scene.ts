@@ -1,9 +1,10 @@
 import { Scene } from "phaser"
-import { UIBar } from "../objects/ui-bar";
+import { UIGraphicBar } from "../objects/ui-graphic-bar";
 
 export class InGameUIScene extends Phaser.Scene {
 
     private _game:Scene;
+    private _distance:number=0;
 
 
     constructor() {
@@ -13,20 +14,19 @@ export class InGameUIScene extends Phaser.Scene {
     }
 
     create() {
-        let healthBar = new UIBar({
-            scene: this,
-            width: 150,
-            height: 10,
-            x: 70,
-            y: 14,
-            value: 3, 
-            maxValue: 3, 
-            color:0xff0f0f,
-            baseColor:0xcccccc,
-        });
+       let healthBar = new UIGraphicBar({
+           scene: this,
+           x: 30,
+           y: 30,
+           height: 40,
+           maxValue: 3,
+           value: 3,
+           texture: 'ingame',
+           emptyImage: 'hudHeart_empty.png',
+           fullImage: 'hudHeart_full.png',
+       });
 
         this._game = this.scene.get('GameScene');
-        this.add.text(10, 10, 'Health', { font: '18px Arial', fill: '#000000' });
         var distance = this.add.text(this.cameras.main.width/2, 10, '', { font: '18px Arial', fill: '#000000' })
 
         this._game.events.on('setHealth', function(value) {
@@ -35,12 +35,16 @@ export class InGameUIScene extends Phaser.Scene {
 
         this._game.events.on('setDistance', function(value) {
             distance.setText((value / 1000) + '');
+            this._distance = value;
         }, this);
 
         this.events.on('shutdown', function() {
             this._game.events.off('setHealth');
             this._game.events.off('setDistance');
         }, this);
+    }
 
+    update() {
+        console.log('distance: ' + this._distance);
     }
 }

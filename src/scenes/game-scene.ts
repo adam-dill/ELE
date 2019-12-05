@@ -27,6 +27,7 @@ export class GameScene extends Phaser.Scene {
     this.load.atlas('player', './assets/alien.png', './assets/alien.json');
     this.load.atlas('ground', './assets/platforms.png', './assets/platforms.json');
     this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
+    this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
   }
 
   create(): void {
@@ -45,13 +46,13 @@ export class GameScene extends Phaser.Scene {
       texture: 'player'
     });
 
-    this._platformManager = new PlatformManager(this);
-    this._platformManager.speed = this._speed;
-    this._astroidManager = new AstroidManager(this, this._platformManager);
+    this._astroidManager = new AstroidManager(this);
     this._astroidManager.frequency = this._maxFrequency;
-
-    this._platformManager.addCollider(this._player);
+    this._platformManager = new PlatformManager(this, this._astroidManager);
+    this._platformManager.speed = this._speed;
+    
     this._astroidManager.addCollider(this._player);
+    this._platformManager.addCollider(this._player);
 
     this.events.on('playerDie', function() {
       this.scene.start(SceneNames.LEADER_ENTRY, {distance: this._distance});
@@ -75,10 +76,8 @@ export class GameScene extends Phaser.Scene {
     this._distance += this._speed;
     this.events.emit('setDistance', this._distance);
 
-    console.log(this._astroidManager.frequency, this._maxFrequency);
     if (this._astroidManager.frequency > this._minFrequency) {
       this._astroidManager.frequency -= this._frequencyInterval;
-      console.log(this._astroidManager.frequency);
     }
   }
   
