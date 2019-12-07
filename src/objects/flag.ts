@@ -51,20 +51,20 @@ export class Flag extends Phaser.GameObjects.Sprite {
     }
 
     private createAnims() {
-        let frameNames = this.scene.anims.generateFrameNames(this.texture.key);
-        let waveFrames = frameNames.filter((value) => value.frame === 'flag'+this.color+'1.png' || value.frame === 'flag'+this.color+'2.png')
-        let downFrames = frameNames.filter((value) => value.frame === 'flag'+this.color+'_down.png');
-        this.scene.anims.create({
-          key: 'wave',
-          frames: waveFrames,
-          frameRate: 5,
-          repeat: -1
-        });
-        this.scene.anims.create({
-          key: 'down',
-          frames: downFrames,
-          frameRate: 15,
-          repeat: 1
-        });
-      }
+      let frameNames = this.scene.anims.generateFrameNames(this.texture.key);
+      let waveFrames = frameNames.filter((value) => value.frame === 'flag'+this.color+'1.png' || value.frame === 'flag'+this.color+'2.png')
+      let downFrames = frameNames.filter((value) => value.frame === 'flag'+this.color+'_down.png');
+      this.scene.anims.create({
+        key: 'wave',
+        frames: waveFrames,
+        frameRate: 5,
+        repeat: -1
+      });
+      this.scene.anims.create({
+        key: 'down',
+        frames: downFrames,
+        frameRate: 15,
+        repeat: 1
+      });
+    }
 }

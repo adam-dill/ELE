@@ -48,6 +48,12 @@ export class Player extends Phaser.GameObjects.Sprite {
     }
   }
 
+  public heal() {
+    if (this._health === 3) { return; }
+    this._health += DAMAGE_AMOUNT;
+    this.scene.events.emit('setHealth', this._health);
+  }
+
   private handleHurt(delta:number) {
     if (this._hurtTime > 0) {
       this.alpha = 0.5;

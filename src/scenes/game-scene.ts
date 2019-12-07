@@ -5,6 +5,8 @@ import { Player } from '../objects/player';
 import { SceneNames } from '../game';
 import { Flag } from '../objects/flag';
 import { ImageText } from '../objects/image-text';
+import { HealthDrop } from '../objects/health-drop';
+import { Time } from 'phaser';
 
 export class GameScene extends Phaser.Scene {
   private _background:Phaser.GameObjects.TileSprite;
@@ -12,7 +14,7 @@ export class GameScene extends Phaser.Scene {
   private _astroidManager:AstroidManager;
   private _inGameManager:InGameMananger;
   
-  private _player:Phaser.GameObjects.Sprite;
+  private _player:Player;
 
   private _speed:number = 10;
   private _distance:number = 0;
@@ -24,6 +26,7 @@ export class GameScene extends Phaser.Scene {
     super({
       key: SceneNames.GAME
     });
+    
   }
 
   preload(): void {
@@ -54,9 +57,9 @@ export class GameScene extends Phaser.Scene {
     this._astroidManager.frequency = this._maxFrequency;
     this._platformManager = new PlatformManager(this, this._astroidManager);
     this._platformManager.speed = this._speed;
-    this._inGameManager = new InGameMananger(this);
+    this._inGameManager = new InGameMananger(this, this._player);
     this._inGameManager.speed = this._speed;
-    
+
     this._astroidManager.addCollider(this._player);
     this._platformManager.addCollider(this._player);
 
