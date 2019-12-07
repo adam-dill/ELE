@@ -27,14 +27,12 @@ export class InGameUIScene extends Phaser.Scene {
        });
 
         this._game = this.scene.get('GameScene');
-        var distance = this.add.text(this.cameras.main.width/2, 10, '', { font: '18px Arial', fill: '#000000' })
 
         this._game.events.on('setHealth', function(value) {
             healthBar.value = value;
         }, this);
 
         this._game.events.on('setDistance', function(value) {
-            distance.setText((value / 1000) + '');
             this._distance = value;
         }, this);
 
@@ -42,10 +40,6 @@ export class InGameUIScene extends Phaser.Scene {
             this._game.events.off('setHealth');
             this._game.events.off('setDistance');
         }, this);
-    }
-
-    update() {
-        //console.log('distance: ' + this._distance);
     }
 
     

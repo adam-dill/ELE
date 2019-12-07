@@ -4,6 +4,7 @@ import { InGameMananger } from '../managers/ingame-manager';
 import { Player } from '../objects/player';
 import { SceneNames } from '../game';
 import { Flag } from '../objects/flag';
+import { ImageText } from '../objects/image-text';
 
 export class GameScene extends Phaser.Scene {
   private _background:Phaser.GameObjects.TileSprite;
@@ -15,8 +16,8 @@ export class GameScene extends Phaser.Scene {
 
   private _speed:number = 10;
   private _distance:number = 0;
-  private _maxFrequency:number = 0;//4;
-  private _minFrequency:number = 0;//1;
+  private _maxFrequency:number = 4;
+  private _minFrequency:number = 1;
   private _frequencyInterval:number = 0.001;
 
   constructor() {
@@ -83,7 +84,7 @@ export class GameScene extends Phaser.Scene {
     this.events.emit('setDistance', this._distance);
 
     if ((this._distance / 1000) % 5 === 0) {
-      this._inGameManager.spawnFlag();
+      this._inGameManager.spawnFlag(Math.round(this._distance/1000));
     }
 
     if (this._astroidManager.frequency > this._minFrequency) {

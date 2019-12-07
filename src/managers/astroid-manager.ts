@@ -1,4 +1,4 @@
-import { Scene, GameObjects } from "phaser";
+import { Scene, GameObjects, Cameras } from "phaser";
 import { PlatformManager } from "./platform-manager";
 import { Player } from "../objects/player";
 
@@ -34,6 +34,7 @@ export class AstroidManager {
             let ms = this._frequency * 1000;
             this._queueTime = Phaser.Math.Between(0, ms);
         }
+        /*
         let toRemove = [];
         this._astroids.forEach((value, index) => {
             if (value.y > this._scene.cameras.main.height - (value.height / 2)) {
@@ -42,6 +43,7 @@ export class AstroidManager {
             }
         });
         toRemove.forEach((value) => this._astroids.splice(value, 1));
+        */
     }
 
     private createAstroid() {
@@ -54,15 +56,16 @@ export class AstroidManager {
         this._astroids.push(astroid);
         this._scene.physics.add.overlap(astroid, this._colliders, function(astroid, object) {
             if (object.name === 'player') {
-                console.log('hit player');
                 (object as Player).hurt();
             } else if (object.name === 'ground') {
+                console.log('astroid hit ground')
                 let tile = (object as GameObjects.Sprite);
                 tile.setFrame('lavaTop_high.png');
                 tile.name = 'lava';
                 astroid.destroy();
+                this._scene.cameras.main.shake(400, 0.02);
             } else {
-                console.log('hit ?');
+                // TODO: handle?
             }
         }.bind(this));
     }
