@@ -1,5 +1,3 @@
-import { Game } from "phaser";
-
 const DAMAGE_AMOUNT:number = 1;
 const HURT_DURATION:number = 400;
 const RECOVERY_DURATION:number = 1000;

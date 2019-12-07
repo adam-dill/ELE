@@ -1,19 +1,22 @@
 import { PlatformManager } from '../managers/platform-manager';
 import { AstroidManager } from '../managers/astroid-manager';
+import { InGameMananger } from '../managers/ingame-manager';
 import { Player } from '../objects/player';
 import { SceneNames } from '../game';
+import { Flag } from '../objects/flag';
 
 export class GameScene extends Phaser.Scene {
   private _background:Phaser.GameObjects.TileSprite;
   private _platformManager:PlatformManager;
   private _astroidManager:AstroidManager;
+  private _inGameManager:InGameMananger;
   
   private _player:Phaser.GameObjects.Sprite;
 
   private _speed:number = 10;
   private _distance:number = 0;
-  private _maxFrequency:number = 4;
-  private _minFrequency:number = 1;
+  private _maxFrequency:number = 0;//4;
+  private _minFrequency:number = 0;//1;
   private _frequencyInterval:number = 0.001;
 
   constructor() {
@@ -43,13 +46,15 @@ export class GameScene extends Phaser.Scene {
       scene: this,
       x: 200,
       y: 200,
-      texture: 'player'
+      texture: 'player',
     });
 
     this._astroidManager = new AstroidManager(this);
     this._astroidManager.frequency = this._maxFrequency;
     this._platformManager = new PlatformManager(this, this._astroidManager);
     this._platformManager.speed = this._speed;
+    this._inGameManager = new InGameMananger(this);
+    this._inGameManager.speed = this._speed;
     
     this._astroidManager.addCollider(this._player);
     this._platformManager.addCollider(this._player);
@@ -71,10 +76,15 @@ export class GameScene extends Phaser.Scene {
     this._background.tilePositionX += 1;
     this._platformManager.update(time, delta);
     this._astroidManager.update(time, delta);
+    this._inGameManager.update(time, delta);
     this._player.update(time, delta);
 
     this._distance += this._speed;
     this.events.emit('setDistance', this._distance);
+
+    if ((this._distance / 1000) % 5 === 0) {
+      this._inGameManager.spawnFlag();
+    }
 
     if (this._astroidManager.frequency > this._minFrequency) {
       this._astroidManager.frequency -= this._frequencyInterval;

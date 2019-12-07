@@ -45,6 +45,8 @@ export class InGameUIScene extends Phaser.Scene {
     }
 
     update() {
-        console.log('distance: ' + this._distance);
+        //console.log('distance: ' + this._distance);
     }
+
+    
 }
