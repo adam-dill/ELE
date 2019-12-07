@@ -20,5 +20,7 @@ export class LeaderBoardScene extends Phaser.Scene {
             scene.events.off('shutdown');
             menu.off('pointerdown');
         }, this);
+
+        window['renderLeaderboardList'].call();
     }
 }

@@ -27,5 +27,7 @@ export class MenuScene extends Phaser.Scene {
             start.off('pointerdown');
             leaderboard.off('pointerdown');
         }, this);
+
+        window['clearOverlay'].call();
     }
 }

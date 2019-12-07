@@ -73,6 +73,8 @@ export class GameScene extends Phaser.Scene {
       this._distance = 0;
       this.scene.get(SceneNames.GAME_UI).scene.stop();
     }, this);
+
+    window['clearOverlay'].call();
   }
 
   update(time:number, delta:number): void {

@@ -1,0 +1,17 @@
+body {
+    margin:0px;
+    padding:0px;
+}
+
+#overlay {
+    position: absolute;
+    width:100%;
+    display:flex;
+    justify-content: center;
+    margin-top:3px;
+}
+
+#overlay>#contentContainer {
+    width: 1000px;
+    color:white;
+}
