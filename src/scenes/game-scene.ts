@@ -32,6 +32,7 @@ export class GameScene extends Phaser.Scene {
     this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
     this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
     this.load.audio('playerJump', './assets/player-jump.mp3');
+    this.load.audio('playerHurt', './assets/player-hurt.mp3');
     this.load.audio('astroidHit', './assets/astroid-hit.mp3', { instances: 3 });
     this.load.audio('healthPickup', './assets/health-pickup.mp3');
   }

@@ -11,7 +11,7 @@ export class Player extends Phaser.GameObjects.Sprite {
   
   private _health:number = 3;
   private _jumpTime:number = 0;
-  private _hurtTime = 0;
+  private _hurtTime:number = 0;
 
   public get autoRun():boolean { return this._autoRun; }
   public set autoRun(value:boolean) {
@@ -47,6 +47,9 @@ export class Player extends Phaser.GameObjects.Sprite {
   public hurt() {
     if (this._hurtTime > 0) { return; }
 
+    if (G.hasSound) {
+      this.scene.sound.play('playerHurt', {volume:0.7});
+    }
     this._health -= DAMAGE_AMOUNT;
     this.scene.events.emit('setHealth', this._health);
     this._hurtTime = HURT_DURATION + RECOVERY_DURATION;
@@ -108,8 +111,7 @@ export class Player extends Phaser.GameObjects.Sprite {
       if (this.body.onFloor()) {
         this._jumpTime = this.scene.game.getTime() + 350;
         if (G.hasSound) {
-          // TODO: jump sound crashes the sound manager on the main menu.
-          //this.scene.sound.play('playerJump', {volume:0.4});
+          this.scene.sound.play('playerJump', {volume:0.4});
         }
       }
     }

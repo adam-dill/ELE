@@ -25,13 +25,13 @@ export class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.atlas('ui', './assets/ui.png', './assets/ui.json');
-
         this.load.image("background", "./assets/blue_shroom.png");
         this.load.atlas('player', './assets/alien.png', './assets/alien.json');
         this.load.atlas('ground', './assets/platforms.png', './assets/platforms.json');
         this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
         this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
         this.load.audio('happySong', './assets/cheerful-day.mp3');
+        this.load.audio('playerJump', './assets/player-jump.mp3');
     }
 
     create() {
@@ -81,6 +81,14 @@ export class MenuScene extends Phaser.Scene {
                 }
                 soundButton.setFrame(this.soundButtonFrame);
                 this._allowSoundChange = false;
+
+                let origY = soundButton.y;
+                soundButton.y -= 15;
+                this.tweens.add({
+                    targets:soundButton,
+                    duration:250,
+                    y: origY,
+                })
             }
         });
 
