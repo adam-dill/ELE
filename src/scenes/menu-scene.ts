@@ -32,6 +32,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
         this.load.audio('happySong', './assets/cheerful-day.mp3');
         this.load.audio('playerJump', './assets/player-jump.mp3');
+        this.load.audio('toggleSound', './assets/toggle-sound.mp3');
     }
 
     create() {
@@ -88,7 +89,9 @@ export class MenuScene extends Phaser.Scene {
                     targets:soundButton,
                     duration:250,
                     y: origY,
-                })
+                });
+
+                this.sound.play('toggleSound');
             }
         });
 
