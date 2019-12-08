@@ -19,7 +19,7 @@ export class PlatformManager {
     private _speed:number = 0;
 
 
-    constructor(scene:Scene, astroidManager:AstroidManager) {
+    constructor(scene:Scene, astroidManager:AstroidManager=null) {
         this._scene = scene;
         this._astroidManager = astroidManager;
         this.createPlatforms();
@@ -68,7 +68,9 @@ export class PlatformManager {
             let sprite = this._scene.physics.add.sprite(currentX, camera.width, 'ground', 'planetMid.png');
             sprite.name = 'ground';
             let body:Phaser.Physics.Arcade.Body = sprite.body as Phaser.Physics.Arcade.Body;
-            this._astroidManager.addCollider(sprite);
+            if (this._astroidManager) {
+                this._astroidManager.addCollider(sprite);
+            }
             body.allowGravity = false;
             body.immovable = true;
             sprite.setPosition(currentX, camera.height);

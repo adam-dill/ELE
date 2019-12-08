@@ -45,8 +45,8 @@ export class GameScene extends Phaser.Scene {
 
     this._player = new Player({
       scene: this,
-      x: 200,
-      y: 200,
+      x: -45,
+      y: 315,
       texture: 'player',
     });
 

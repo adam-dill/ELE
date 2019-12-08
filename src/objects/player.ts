@@ -12,8 +12,15 @@ export class Player extends Phaser.GameObjects.Sprite {
   private _jumpTime:number = 0;
   private _hurtTime = 0;
 
+  public get autoRun():boolean { return this._autoRun; }
+  public set autoRun(value:boolean) {
+    this._autoRun = value;
+  }
+  private _autoRun:boolean = true;
+
   constructor(params) {
     super(params.scene, params.x, params.y, params.texture);
+    if (params.autoRun !== undefined) { this.autoRun = params.autoRun; }
     this.name = 'player';
     this._cursors = this.scene.input.keyboard.createCursorKeys();
     this.createPlayerAnims();
@@ -23,7 +30,8 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.body.setSize(105, 154);
     this.body.setOffset(12, 102);
     this.scene.add.existing(this);
-    this.body.collideWorldBounds = true;
+
+    this.body.collideWorldBounds = this.autoRun;
     
     this.depth = 10;
     this.anims.play('jump');
@@ -90,7 +98,7 @@ export class Player extends Phaser.GameObjects.Sprite {
     } else if (left) {
       this.body.setVelocityX(-500);    
     } else {
-      this.body.setVelocityX(-50);
+      this.body.setVelocityX((this.autoRun) ? -50 : 0);
     }
     if (this.body.onFloor()) {
       this._jumpTime = 0;
@@ -110,11 +118,18 @@ export class Player extends Phaser.GameObjects.Sprite {
     if (this.body.onFloor() === false) {
       this.playAnim('jump');
     } else if (this.body.velocity.x > 0) {
+      this.scaleX = 1;
       this.playAnim('run');
     } else if (this.body.velocity.x < -50) {
-      this.playAnim('walk');
+      if (this.autoRun) {
+        this.scaleX = 1;
+        this.playAnim('walk');
+      } else {
+        this.scaleX = -1;
+        this.playAnim('run');
+      }
     } else {
-      this.playAnim('jog');
+      this.playAnim((this.autoRun) ? 'jog' : 'idle');
     }
   }
 
