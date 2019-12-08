@@ -3,10 +3,6 @@ import { AstroidManager } from '../managers/astroid-manager';
 import { InGameMananger } from '../managers/ingame-manager';
 import { Player } from '../objects/player';
 import { SceneNames } from '../game';
-import { Flag } from '../objects/flag';
-import { ImageText } from '../objects/image-text';
-import { HealthDrop } from '../objects/health-drop';
-import { Time } from 'phaser';
 
 export class GameScene extends Phaser.Scene {
   private _background:Phaser.GameObjects.TileSprite;
@@ -35,6 +31,7 @@ export class GameScene extends Phaser.Scene {
     this.load.atlas('ground', './assets/platforms.png', './assets/platforms.json');
     this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
     this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
+    this.load.audio('astroidHit', './assets/astroid_hit.mp3', { instances: 3 });
   }
 
   create(): void {

@@ -1,6 +1,4 @@
-import { GameObjects } from 'phaser';
 import { ImageText } from './image-text';
-import { Http2ServerRequest } from 'http2';
 
 export class Flag extends Phaser.GameObjects.Sprite {
 

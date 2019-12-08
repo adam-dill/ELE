@@ -1,5 +1,4 @@
 import { Scene, GameObjects, Cameras } from "phaser";
-import { PlatformManager } from "./platform-manager";
 import { Player } from "../objects/player";
 
 export class AstroidManager {
@@ -52,6 +51,7 @@ export class AstroidManager {
                 tile.setFrame('lavaTop_high.png');
                 tile.name = 'lava';
                 astroid.destroy();
+                this._scene.sound.play('astroidHit');
                 this._scene.cameras.main.shake(400, 0.02);
             } else {
                 // TODO: handle?

@@ -34,6 +34,9 @@ const config: Phaser.Types.Core.GameConfig = {
   input: {
     keyboard: true
   },
+  audio: {
+    disableWebAudio: true
+  },
   backgroundColor: "#000000",
   render: { pixelArt: false, antialias: true }
 };

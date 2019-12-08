@@ -1,4 +1,3 @@
-import { GameObjects } from "phaser";
 
 export class HealthDrop extends Phaser.Physics.Arcade.Sprite {
 
