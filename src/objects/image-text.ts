@@ -51,7 +51,7 @@ export class ImageText {
         let arr = this.text.split('');
         arr.forEach((value) => {
             if (this._map[value] !== undefined) {
-                this._sprites.push(this._scene.add.image(0, 0, this._texture, this._map[value]));
+                this._sprites.push(this._scene.add.image(-200, -200, this._texture, this._map[value]));
             }
         });
         this.position();

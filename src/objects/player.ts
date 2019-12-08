@@ -1,3 +1,5 @@
+import { G } from '../g';
+
 const DAMAGE_AMOUNT:number = 1;
 const HURT_DURATION:number = 400;
 const RECOVERY_DURATION:number = 1000;
@@ -7,7 +9,6 @@ export class Player extends Phaser.GameObjects.Sprite {
 
   private _cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   
-
   private _health:number = 3;
   private _jumpTime:number = 0;
   private _hurtTime = 0;
@@ -106,6 +107,10 @@ export class Player extends Phaser.GameObjects.Sprite {
     if (up) {
       if (this.body.onFloor()) {
         this._jumpTime = this.scene.game.getTime() + 350;
+        if (G.hasSound) {
+          // TODO: jump sound crashes the sound manager on the main menu.
+          //this.scene.sound.play('playerJump', {volume:0.4});
+        }
       }
     }
     if (this._jumpTime > this.scene.game.getTime()) {

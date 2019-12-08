@@ -31,7 +31,9 @@ export class GameScene extends Phaser.Scene {
     this.load.atlas('ground', './assets/platforms.png', './assets/platforms.json');
     this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
     this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
-    this.load.audio('astroidHit', './assets/astroid_hit.mp3', { instances: 3 });
+    this.load.audio('playerJump', './assets/player-jump.mp3');
+    this.load.audio('astroidHit', './assets/astroid-hit.mp3', { instances: 3 });
+    this.load.audio('healthPickup', './assets/health-pickup.mp3');
   }
 
   create(): void {
@@ -42,6 +44,7 @@ export class GameScene extends Phaser.Scene {
     this._background = this.add.tileSprite(-shakeOffset, -shakeOffset, this.sys.canvas.width + (shakeOffset*2), this.sys.canvas.height + (shakeOffset*2), 'background');
     this._background.setOrigin(0, 0);
     this._background.setTileScale(0.9);
+
 
     this._player = new Player({
       scene: this,

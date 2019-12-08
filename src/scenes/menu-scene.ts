@@ -31,6 +31,7 @@ export class MenuScene extends Phaser.Scene {
         this.load.atlas('ground', './assets/platforms.png', './assets/platforms.json');
         this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
         this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
+        this.load.audio('happySong', './assets/cheerful-day.mp3');
     }
 
     create() {
@@ -39,6 +40,11 @@ export class MenuScene extends Phaser.Scene {
         this._background = this.add.tileSprite(-shakeOffset, -shakeOffset, this.sys.canvas.width + (shakeOffset*2), this.sys.canvas.height + (shakeOffset*2), 'background');
         this._background.setOrigin(0, 0);
         this._background.setTileScale(0.9);
+
+        if (G.backgroundMusic === null || G.backgroundMusic.key !== 'happySong') {
+            G.backgroundMusic = this.sound.add('happySong', {volume: 0.7, loop:true});
+            G.backgroundMusic.play();
+        }
 
         let soundButton = this.physics.add.image(0, 0, 'ui', this.soundButtonFrame);
         soundButton.setScale(0.5);
@@ -68,6 +74,11 @@ export class MenuScene extends Phaser.Scene {
         this.physics.add.collider(this._player, soundButton, (a, b) => {
             if (this._allowSoundChange) {
                 G.hasSound = !G.hasSound;
+                if (G.hasSound) {
+                    G.backgroundMusic.resume();
+                } else {
+                    G.backgroundMusic.pause();
+                }
                 soundButton.setFrame(this.soundButtonFrame);
                 this._allowSoundChange = false;
             }

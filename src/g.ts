@@ -1,3 +1,4 @@
 export const G = {
-    hasSound: true
+    hasSound: true,
+    backgroundMusic: null,
 }

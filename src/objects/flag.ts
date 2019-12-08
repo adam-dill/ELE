@@ -38,8 +38,8 @@ export class Flag extends Phaser.GameObjects.Sprite {
           textMap[i.toString()] = 'hud'+i+'.png';
         }
         this._imageText = new ImageText(this.scene, 'ingame', textMap);
-        this._imageText.x = this.x;
-        this._imageText.y = this.y;
+        this._imageText.x = -200;
+        this._imageText.y = -200;
         this._imageText.text = params.text;
     }
 

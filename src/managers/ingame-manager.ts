@@ -2,6 +2,7 @@ import { Scene, GameObjects, Physics } from "phaser";
 import { Flag } from "../objects/flag";
 import { HealthDrop } from "../objects/health-drop";
 import { Player } from "../objects/player";
+import { G } from "../g";
 
 
 export class InGameMananger {
@@ -46,6 +47,9 @@ export class InGameMananger {
         this._scene.physics.add.overlap(this._player, drop, (player:Player, drop:HealthDrop) => {
             let index = this._drops.indexOf(drop);
             this._drops.splice(index, 1);
+            if (G.hasSound) {
+                this._scene.sound.play('healthPickup');
+            }
             player.heal();
             drop.destroy();
         });
@@ -89,6 +93,6 @@ export class InGameMananger {
 
 
     private generateHealthDropTime(time:number) {
-        return time + Phaser.Math.Between(10000, 50000);
+        return time + Phaser.Math.Between(10000, 30000);
     }
 }
