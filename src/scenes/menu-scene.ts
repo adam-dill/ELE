@@ -45,7 +45,7 @@ export class MenuScene extends Phaser.Scene {
 
         if (G.backgroundMusic === null || G.backgroundMusic.key !== 'happySong') {
             G.backgroundMusic = this.sound.add('happySong', {volume: 0.7, loop:true});
-            //G.backgroundMusic.play();
+            G.backgroundMusic.play();
         }
 
         let soundButton = this.physics.add.image(0, 0, 'ui', this.soundButtonFrame);
