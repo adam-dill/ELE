@@ -7,7 +7,7 @@ export class MenuScene extends Phaser.Scene {
     private _background:Phaser.GameObjects.TileSprite;
     private _platformManager:PlatformManager;
     private _player:Player;
-
+    private _from:string;
     private _allowSoundChange:boolean = false;
     
     constructor() {
@@ -36,6 +36,7 @@ export class MenuScene extends Phaser.Scene {
     }
 
     create() {
+        console.log('create menu');
         // create background
         let shakeOffset = 50;
         this._background = this.add.tileSprite(-shakeOffset, -shakeOffset, this.sys.canvas.width + (shakeOffset*2), this.sys.canvas.height + (shakeOffset*2), 'background');
@@ -44,7 +45,7 @@ export class MenuScene extends Phaser.Scene {
 
         if (G.backgroundMusic === null || G.backgroundMusic.key !== 'happySong') {
             G.backgroundMusic = this.sound.add('happySong', {volume: 0.7, loop:true});
-            G.backgroundMusic.play();
+            //G.backgroundMusic.play();
         }
 
         let soundButton = this.physics.add.image(0, 0, 'ui', this.soundButtonFrame);

@@ -1,7 +1,12 @@
 import { SceneNames } from "../game";
+import { PlatformManager } from "../managers/platform-manager";
+import { Player } from "../objects/player";
 
 export class LeaderBoardEntryScene extends Phaser.Scene {
-
+    private _background:Phaser.GameObjects.TileSprite;
+    private _platformManager:PlatformManager;
+    private _player:Player;
+    private _cameraSize:Phaser.Geom.Point;
     private _distance:number = 0;
 
     constructor() {
@@ -15,32 +20,55 @@ export class LeaderBoardEntryScene extends Phaser.Scene {
         this._distance = data.distance;
     }
 
-    create() {
-        let title = this.add.text(0, this.cameras.main.height/2, "Enter Info to Leader Board Screen", { font: '24px Arial', fill: '#ffffff' });
-        title.x = this.cameras.main.width / 2 - title.width / 2;
+    preload(): void {
+        this.load.image("background", "./assets/blue_shroom.png");
+        this.load.atlas('player', './assets/alien.png', './assets/alien.json');
+        this.load.atlas('ground', './assets/platforms.png', './assets/platforms.json');
+        this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
+        this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
+        this.load.audio('playerJump', './assets/player-jump.mp3');
+        this.load.audio('playerHurt', './assets/player-hurt.mp3');
+        this.load.audio('astroidHit', './assets/astroid-hit.mp3', { instances: 3 });
+        this.load.audio('healthPickup', './assets/health-pickup.mp3');
+    }
 
-        let formated = Phaser.Math.RoundTo(this._distance/1000, -1);
-        let distance = this.add.text(0, 0, "Distance: "+formated, { font: '24px Arial', fill: '#ffffff' });
-        distance.x = this.cameras.main.width / 2 - distance.width / 2;
-        distance.y = title.y + title.height;
+    create(): void {
+        this._cameraSize = new Phaser.Geom.Point(this.cameras.main.width, this.cameras.main.height);
+
+        // create background
+        let shakeOffset = 50;
+        this._background = this.add.tileSprite(-shakeOffset, -shakeOffset, this._cameraSize.x + (shakeOffset*2), this._cameraSize.y + (shakeOffset*2), 'background');
+        this._background.setOrigin(0, 0);
+        this._background.setTileScale(0.9);
         
-        let menu = this.add.text(10, 10, 'Menu', { font: '18px Arial', fill: '#ffffff' });
-        menu.setInteractive().on('pointerdown', function() {
-            this.scene.start(SceneNames.MENU);
-        }, this);
+        this._player = new Player({
+            scene: this,
+            x: this._cameraSize.x,
+            y: 350,
+            texture: 'player',
+            autoRun: false,
+        });
 
-        let leader = this.add.text(10, 30, 'Leader Boards', { font: '18px Arial', fill: '#ffffff' });
-        leader.setInteractive().on('pointerdown', function() {
-            this.scene.start(SceneNames.LEADER);
-        }, this);
+        this._platformManager = new PlatformManager(this);
+        this._platformManager.addCollider(this._player);
 
-        this.events.on('shutdown', function(scene:Phaser.Scene) {
-            scene.events.off('shutdown');
-            menu.off('pointerdown');
-            leader.off('pointerdown');
-        }, this);
-        console.log('create');
+        this._player.scaleX = -1;
+        this._player.body.collideWorldBounds = true;
 
-        window['renderLeaderboardInput'].call(window, this._distance);
+        window['clearOverlay'].call();
+    }
+
+    update(time:number, delta:number): void {
+        // update objects
+        this._player.update(time, delta);
+        let v = this._player.body.velocity.x;
+        if (v > 0 && this._player.x > this._cameraSize.x/2) {
+            this._player.body.collideWorldBounds = true;
+        } else {
+            this._player.body.collideWorldBounds = false;
+            if (this._player.x < 0) {
+                this.scene.start(SceneNames.MENU, {from:SceneNames.GAME});
+            }
+        }
     }
 }

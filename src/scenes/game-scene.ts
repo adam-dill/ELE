@@ -3,6 +3,7 @@ import { AstroidManager } from '../managers/astroid-manager';
 import { InGameMananger } from '../managers/ingame-manager';
 import { Player } from '../objects/player';
 import { SceneNames } from '../game';
+import { G } from '../g';
 
 export class GameScene extends Phaser.Scene {
   private _background:Phaser.GameObjects.TileSprite;
@@ -12,7 +13,6 @@ export class GameScene extends Phaser.Scene {
   
   private _player:Player;
 
-  private _speed:number = 10;
   private _distance:number = 0;
   private _maxFrequency:number = 4;
   private _minFrequency:number = 1;
@@ -50,16 +50,16 @@ export class GameScene extends Phaser.Scene {
     this._player = new Player({
       scene: this,
       x: -45,
-      y: 315,
+      y: 350,
       texture: 'player',
     });
 
     this._astroidManager = new AstroidManager(this);
     this._astroidManager.frequency = this._maxFrequency;
     this._platformManager = new PlatformManager(this, this._astroidManager);
-    this._platformManager.speed = this._speed;
+    this._platformManager.speed = G.speed;
     this._inGameManager = new InGameMananger(this, this._player);
-    this._inGameManager.speed = this._speed;
+    this._inGameManager.speed = G.speed;
 
     this._astroidManager.addCollider(this._player);
     this._platformManager.addCollider(this._player);
@@ -86,7 +86,7 @@ export class GameScene extends Phaser.Scene {
     this._inGameManager.update(time, delta);
     this._player.update(time, delta);
 
-    this._distance += this._speed;
+    this._distance += G.speed;
     this.events.emit('setDistance', this._distance);
 
     if ((this._distance / 1000) % 5 === 0) {
@@ -97,5 +97,4 @@ export class GameScene extends Phaser.Scene {
       this._astroidManager.frequency -= this._frequencyInterval;
     }
   }
-  
 }
