@@ -1,11 +1,18 @@
 function renderLeaderboardInput(distance) {
-    console.log("display the leaderboard input form.", distance);
-    //document.getElementById('contentContainer').innerHTML = "display the leaderboard input form. " + distance;
+    fetch('leaderboard-input.html').then((response) => {
+        response.text().then(text => document.getElementById('contentContainer').innerHTML = text);
+    });
 }
 
 function renderLeaderboardList() {
-    console.log("display the leaderboard list.");
-    //document.getElementById('contentContainer').innerHTML = "display the leaderboard list.";
+    
+}
+
+
+function loadOverlay(url) {
+    fetch(url).then((response) => {
+        response.text().then(text => document.getElementById('contentContainer').innerHTML = text);
+    });
 }
 
 function clearOverlay() {

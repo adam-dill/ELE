@@ -55,7 +55,7 @@ export class LeaderBoardEntryScene extends Phaser.Scene {
         this._player.scaleX = -1;
         this._player.body.collideWorldBounds = true;
 
-        window['clearOverlay'].call();
+        window['loadOverlay'].call(undefined, 'leaderboard-input.html');
     }
 
     update(time:number, delta:number): void {

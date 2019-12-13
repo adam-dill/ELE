@@ -13,5 +13,6 @@ body {
 
 #overlay>#contentContainer {
     width: 1000px;
+    height: 576px;
     color:white;
 }
