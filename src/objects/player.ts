@@ -24,15 +24,9 @@ export class Player extends Phaser.GameObjects.Sprite {
     if (params.autoRun !== undefined) { this.autoRun = params.autoRun; }
     this.name = 'player';
     
-    //this._cursors = this.scene.input.keyboard.createCursorKeys();
-    this._cursors = this.scene.input.keyboard.addKeys(
-      {up:Phaser.Input.Keyboard.KeyCodes.W,
-      down:Phaser.Input.Keyboard.KeyCodes.S,
-      left:Phaser.Input.Keyboard.KeyCodes.A,
-      right:Phaser.Input.Keyboard.KeyCodes.D});
+    this._cursors = this.scene.input.keyboard.createCursorKeys();
     this.createPlayerAnims();
     
-
     this.scene.physics.world.enable(this);
     this.body.setGravityY(1000);
     this.body.setSize(105, 154);

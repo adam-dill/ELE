@@ -7,6 +7,25 @@
     <title>Leaderboard Input Screen</title>
 </head>
 <body>
-    Allow the user to input score.
+    <div class="leaderboard-input-container">
+        <div class="info-container">
+            <div class='distance'>
+                <span>Distance:</span>
+                <span id="distanceValue">--</span>
+            </div>
+            <div class="rank">
+                <span>Rank:</span>
+                <span id="rankValue">--</span>
+            </div>
+        </div>
+        <div class="input-container">
+            <button id="leaderboardButton" class="button">Add score to the leaderboards</button>
+            <div id="inputControls">
+                <input id="inputText" type="text" placeholder="Enter your name...">
+                <button id="submitButton" class="button">Submit</button>
+            </div>
+            <p id="statusMessage"></p>
+        </div>
+    </div>
 </body>
 </html>

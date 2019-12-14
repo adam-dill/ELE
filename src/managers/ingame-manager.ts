@@ -57,7 +57,6 @@ export class InGameMananger {
     }
 
     update(time:number, delta:number) {
-        console.log(time);
         let toDestroy = [];
         this._flags.forEach((value, index) => {
             value.x -= this._speed;

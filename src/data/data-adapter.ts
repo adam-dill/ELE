@@ -23,12 +23,36 @@ export class DataAdapter {
         }
     }
 
+
     /**
      * Get the scores for the game.
      */
     public static async getScores():Promise<any> {
         await this.init();
         const response = await fetch(`${API}${SCORES}/${this.game['id']}`);
+        const json = await response.json();
+        return json.data;
+    }
+
+
+    /**
+     * Post a score to the service.
+     * @param name 
+     * @param score 
+     */
+    public static async postScore(name:string, score:number):Promise<any> {
+        await this.init();
+        let body = {
+            game_id: this.game['id'],
+            player_name: name,
+            scores: {
+                distance: score
+            }
+        };
+        const response = await fetch(`${API}${SCORES}/add`, {
+            method:'post',
+            body: JSON.stringify(body)
+        });
         const json = await response.json();
         return json.data;
     }

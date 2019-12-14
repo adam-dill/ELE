@@ -17,15 +17,12 @@ export class LeaderBoardScene extends Phaser.Scene {
     }
 
     preload(): void {
+        this.load.atlas('ui', './assets/ui.png', './assets/ui.json');
         this.load.image("background", "./assets/blue_shroom.png");
         this.load.atlas('player', './assets/alien.png', './assets/alien.json');
         this.load.atlas('ground', './assets/platforms.png', './assets/platforms.json');
-        this.load.atlas('astroids', './assets/astroids.png', './assets/astroids.json');
         this.load.atlas('ingame', './assets/ingame.png', './assets/ingame.json');
         this.load.audio('playerJump', './assets/player-jump.mp3');
-        this.load.audio('playerHurt', './assets/player-hurt.mp3');
-        this.load.audio('astroidHit', './assets/astroid-hit.mp3', { instances: 3 });
-        this.load.audio('healthPickup', './assets/health-pickup.mp3');
     }
 
     create(): void {
@@ -37,6 +34,10 @@ export class LeaderBoardScene extends Phaser.Scene {
         this._background.setOrigin(0, 0);
         this._background.setTileScale(0.9);
         
+        let homeSign = this.add.image(0, 0, 'ui', 'sign_home.png');
+        homeSign.x = this.cameras.main.width - homeSign.width + 50;
+        homeSign.y = 475;
+
         this._player = new Player({
             scene: this,
             x: this._cameraSize.x,
@@ -76,16 +77,15 @@ export class LeaderBoardScene extends Phaser.Scene {
                 let scores = DataAdapter
                                 .serialize(ScoreResult, result)
                                 .sort((a, b) => a.scores.distance < b.scores.distance ? 1 : -1);
-                console.log(scores);
-                let dom = document.getElementsByClassName('leaderboard-list')[0];
-                this._addScores(dom, scores.slice(0, 3))
+                this._addScores(scores.slice(0, 3))
             })
             .catch((result) => {
                 console.error('Failed to load scores.', result);
             });
     }
 
-    private _addScores(dom, scores) {
+    private _addScores(scores) {
+        let dom = document.getElementsByClassName('leaderboard-list')[0];
         scores.forEach((value) => {
             let score = Phaser.Math.FloorTo(value.scores.distance / 1000, -2);
             let str = `<li><span class="name">${value.playerName}</span><span class="score">${score}</span></li>`;
