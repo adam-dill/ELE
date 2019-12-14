@@ -8,7 +8,6 @@ export class LeaderBoardScene extends Phaser.Scene {
     private _platformManager:PlatformManager;
     private _player:Player;
     private _cameraSize:Phaser.Geom.Point;
-    private _scores:Array<ScoreResult>;
 
     constructor() {
         super({
@@ -52,18 +51,9 @@ export class LeaderBoardScene extends Phaser.Scene {
         this._player.scaleX = -1;
         this._player.body.collideWorldBounds = true;
 
-        window['loadOverlay'].call(undefined, 'leaderboard-list.html');
-
-        DataAdapter.getScores()
-            .then((result) => {
-                this._scores = DataAdapter
-                                .serialize(ScoreResult, result)
-                                .sort((a, b) => a.scores.distance > b.scores.distance ? 1 : -1);
-                console.log(this._scores);
-            })
-            .catch((result) => {
-                console.error('Failed to load scores.', result);
-            });
+        window['loadOverlay'].call(undefined, 'leaderboard-list.html', () => {
+            this._loadScores();
+        });
     }
 
     update(time:number, delta:number): void {
@@ -78,5 +68,28 @@ export class LeaderBoardScene extends Phaser.Scene {
                 this.scene.start(SceneNames.MENU, {from:SceneNames.LEADER});
             }
         }
+    }
+
+    private _loadScores() {
+        DataAdapter.getScores()
+            .then((result) => {
+                let scores = DataAdapter
+                                .serialize(ScoreResult, result)
+                                .sort((a, b) => a.scores.distance < b.scores.distance ? 1 : -1);
+                console.log(scores);
+                let dom = document.getElementsByClassName('leaderboard-list')[0];
+                this._addScores(dom, scores.slice(0, 3))
+            })
+            .catch((result) => {
+                console.error('Failed to load scores.', result);
+            });
+    }
+
+    private _addScores(dom, scores) {
+        scores.forEach((value) => {
+            let score = Phaser.Math.FloorTo(value.scores.distance / 1000, -2);
+            let str = `<li><span class="name">${value.playerName}</span><span class="score">${score}</span></li>`;
+            dom.insertAdjacentHTML('beforeend', str);
+        });
     }
 }

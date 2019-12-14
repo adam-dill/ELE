@@ -1,3 +1,8 @@
+@font-face {
+    font-family: OrangeJuice;
+    src: url(assets/fonts/orangejuice.ttf);
+}
+
 body {
     margin:0px;
     padding:0px;
@@ -14,5 +19,45 @@ body {
 #overlay>#contentContainer {
     width: 1000px;
     height: 576px;
-    color:white;
+}
+
+.leaderboard-list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: OrangeJuice;
+}
+
+.leaderboard-list-container>h1 {
+    text-align: center;
+    font-size: 36pt;
+    margin-bottom: 15px;
+}
+
+.leaderboard-list {
+    display: inline-block;
+    margin:0px auto;
+}
+
+.leaderboard-list>li {
+    counter-increment: leaderboard-count;
+    display: flex;
+    align-items: center;
+}
+
+.leaderboard-list>li::before {
+    content: counter(leaderboard-count);
+    font-size: 42pt;
+    color:purple;
+    margin-right: 30px;
+}
+
+.leaderboard-list>li>.name {
+    font-size: 26pt;
+}
+
+.leaderboard-list>li>.score {
+    font-size: 22pt;
+    font-style: italic;
+    margin-left: 35px;
 }

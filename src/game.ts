@@ -23,7 +23,7 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   type: Phaser.AUTO,
   parent: "game",
-  scene: [MenuScene, LeaderBoardScene, GameScene, InGameUIScene, LeaderBoardEntryScene],
+  scene: [LeaderBoardScene, MenuScene, GameScene, InGameUIScene, LeaderBoardEntryScene],
   physics: {
     default: "arcade",
     arcade: {

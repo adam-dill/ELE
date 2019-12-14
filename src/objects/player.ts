@@ -94,15 +94,6 @@ export class Player extends Phaser.GameObjects.Sprite {
     let right:Boolean = this._cursors.right.isDown;
     let left:Boolean = this._cursors.left.isDown;
     let up:Boolean = this._cursors.up.isDown;
-    
-    var pointer = this.scene.input.activePointer;
-    if (pointer.isDown) {
-      var touchX = pointer.x;
-      var touchY = pointer.y;
-      if (touchX > this.x + 75) { right = true; }
-      if (touchX < this.x - 75) { left = true; }
-      if (touchY < this.y) { up = true; }
-    }
 
     if (right) {
       this.body.setVelocityX(500);
