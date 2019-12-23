@@ -8,6 +8,7 @@ export class LeaderBoardScene extends Phaser.Scene {
     private _platformManager:PlatformManager;
     private _player:Player;
     private _cameraSize:Phaser.Geom.Point;
+    private _loadingText:Phaser.GameObjects.Text;
 
     constructor() {
         super({
@@ -52,6 +53,12 @@ export class LeaderBoardScene extends Phaser.Scene {
         this._player.scaleX = -1;
         this._player.body.collideWorldBounds = true;
 
+        this._loadingText = this.add.text(500, 100, "Loading...", { 
+            fontFamily: 'OrangeJuice', 
+            fontSize: '24px',
+            color: 'black'
+        });
+        this._loadingText.x = this._cameraSize.x / 2 - this._loadingText.width / 2;
         window['loadOverlay'].call(undefined, 'leaderboard-list.html', () => {
             this._loadScores();
         });
@@ -78,6 +85,7 @@ export class LeaderBoardScene extends Phaser.Scene {
                                 .serialize(ScoreResult, result)
                                 .sort((a, b) => a.scores.distance < b.scores.distance ? 1 : -1);
                 this._addScores(scores.slice(0, 3))
+                this._loadingText.destroy();
             })
             .catch((result) => {
                 console.error('Failed to load scores.', result);
